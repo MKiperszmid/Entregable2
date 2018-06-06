@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.martin.kiperszmid.entregable.Controller.RecetaController;
 import com.martin.kiperszmid.entregable.Controller.RecyclerAdapter;
@@ -32,7 +33,7 @@ public class FragmentRecetas extends Fragment implements RecyclerAdapter.Notific
     private NotificarResetaActivity notificarResetaActivity;
     private List<Receta> recetas;
     private List<Receta> filtrado;
-    private CoordinatorLayout coordinatorLayout;
+    private RelativeLayout relativeLayout;
     RecyclerAdapter adapter;
     private ItemTouchHelper helper;
     private boolean isFiltered = false;
@@ -51,7 +52,7 @@ public class FragmentRecetas extends Fragment implements RecyclerAdapter.Notific
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_recetas, container, false);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
+        relativeLayout = view.findViewById(R.id.relativeLayout);
         recetas = RecetaController.getListaRecetas();
 
         final RecyclerView recyclerView = view.findViewById(R.id.recetasRecycler);
@@ -126,7 +127,7 @@ public class FragmentRecetas extends Fragment implements RecyclerAdapter.Notific
 
             adapter.removeReceta(posicionEliminada);
 
-            Snackbar.make(coordinatorLayout, name + " fue removido!", Snackbar.LENGTH_SHORT).setAction("DESHACER", new View.OnClickListener() {
+            Snackbar.make(relativeLayout, name + " fue removido!", Snackbar.LENGTH_SHORT).setAction("DESHACER", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapter.restoreReceta(recetaEliminada, posicionEliminada);

@@ -65,4 +65,5 @@
             android:id="@+id/detallePreparacion"/>
 
     </RelativeLayout>
+
 </ScrollView>

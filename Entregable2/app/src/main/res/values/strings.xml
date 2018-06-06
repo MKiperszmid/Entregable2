@@ -6,4 +6,8 @@
     <string name="Autor">- George Bernard Shaw</string>
     <string name="Abrir">Abrir</string>
     <string name="Cerrar">Cerrar</string>
+    <string name="redes_sociales">Redes Sociales:</string>
+    <string name="aboutusBody">Somos alumnos dedicados a la programacion de aplicaciones en dispositivos Android. Nuestra tarea es realizar dichas aplicaciones, con la mayor calidad posible, de la manera mas eficaz y eficiente.</string>
+    <string name="aboutusTitle">About Us:</string>
+    <string name="githubLink">/ MKiperszmid</string>
 </resources>
