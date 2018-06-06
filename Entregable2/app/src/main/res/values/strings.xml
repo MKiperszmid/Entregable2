@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Entregable</string>
+    <string name="recetas">Recetas</string>
+    <string name="about_us">About Us</string>
+    <string name="Frase">No hay amor mas sincero que el que sentimos hacia la comida.</string>
+    <string name="Autor">- George Bernard Shaw</string>
+    <string name="Abrir">Abrir</string>
+    <string name="Cerrar">Cerrar</string>
+</resources>

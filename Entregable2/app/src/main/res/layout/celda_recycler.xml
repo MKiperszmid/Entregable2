@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorRojo"
+        android:id="@+id/viewBackground">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            tools:src="@drawable/ic_delete_white_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:id="@+id/deleteReceta"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DELETE"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/deleteReceta"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewForeground"
+        android:background="@color/colorWhite">
+
+        <com.martin.kiperszmid.entregable.Controller.SquareImageView
+            android:layout_width="@dimen/imageSize"
+            android:layout_height="@dimen/imageSize"
+            android:id="@+id/imageviewCelda"
+            android:scaleType="fitXY"
+            android:layout_marginStart="10dp"
+            tools:src="@drawable/quintonil"
+            android:layout_alignTop="@id/textviewCeldaTitulo"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:id="@+id/textviewCeldaTitulo"
+            tools:text="TITULO 1"
+            android:layout_toEndOf="@id/imageviewCelda"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/textviewCeldaIngredientes"
+            android:layout_below="@id/textviewCeldaTitulo"
+            tools:text="Ingredientes 1, Ingredientes 2."
+            android:maxLines="3"
+            android:layout_toEndOf="@id/imageviewCelda"/>
+    </RelativeLayout>
+
+</FrameLayout>
