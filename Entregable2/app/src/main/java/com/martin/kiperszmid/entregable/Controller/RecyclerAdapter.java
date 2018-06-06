@@ -1,10 +1,12 @@
 package com.martin.kiperszmid.entregable.Controller;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,14 +17,16 @@ import com.martin.kiperszmid.entregable.R;
 import java.util.Collections;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter {
+public class RecyclerAdapter extends RecyclerView.Adapter implements RecyclerTouchCallback.ItemTouchHelperAdapter {
 
     private List<Receta> recetas;
-
+    private OnItemClickListener itemClickListener;
+    private RecyclerTouchCallback.OnStartDragListener startDragListener;
     private NotificadorRecetaCelda notificadorRecetaCelda;
 
-    public RecyclerAdapter(List<Receta> recetas, NotificadorRecetaCelda notificadorRecetaCelda) {
+    public RecyclerAdapter(List<Receta> recetas, RecyclerTouchCallback.OnStartDragListener startDragListener, NotificadorRecetaCelda notificadorRecetaCelda) {
         this.recetas = recetas;
+        this.startDragListener = startDragListener;
         this.notificadorRecetaCelda = notificadorRecetaCelda;
     }
 
@@ -31,9 +35,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public void swapRecetas(Integer indexA, Integer indexB){
-        Collections.swap(recetas, indexA, indexB );
-        notifyDataSetChanged();
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
     }
 
     @NonNull
@@ -69,12 +72,35 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         return recetas.size();
     }
 
-    public class CeldaViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public boolean onItemMove(int startPos, int endPos) {
+        if (startPos < recetas.size() && endPos < recetas.size()) {
+            if (startPos < endPos) {
+                for (int i = startPos; i < endPos; i++) {
+                    Collections.swap(recetas, i, i + 1);
+                }
+            } else {
+                for (int i = startPos; i > endPos; i--) {
+                    Collections.swap(recetas, i, i - 1);
+                }
+            }
+            notifyItemMoved(startPos, endPos);
+        }
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        recetas.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public class CeldaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RecyclerTouchCallback.ItemTouchHelperViewHolder {
 
         TextView titulo;
         TextView ingredientes;
         ImageView imagen;
-        RelativeLayout viewForeground, viewBackground; //TODO: Agregar Esto!
+        RelativeLayout viewForeground, viewBackground;
 
         public CeldaViewHolder(View itemView) {
             super(itemView);
@@ -83,20 +109,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
             imagen = itemView.findViewById(R.id.imageviewCelda);
             viewForeground = itemView.findViewById(R.id.viewForeground);
             viewBackground = itemView.findViewById(R.id.viewBackground);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    notificadorRecetaCelda.notificarRecetaClickeada(recetas.get(pos));
-                }
-            });
+            itemView.setOnClickListener(this);
         }
 
         public void bindHolder(Receta receta){
             titulo.setText(receta.getTitulo());
             ingredientes.setText(receta.getIngredientes());
             imagen.setImageResource(receta.getImagen());
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(itemClickListener != null)
+                itemClickListener.onItemClick(v, getAdapterPosition());
+
+            int pos = getAdapterPosition();
+            notificadorRecetaCelda.notificarRecetaClickeada(recetas.get(pos));
         }
     }
 

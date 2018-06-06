@@ -17,7 +17,7 @@ import android.widget.EditText;
 
 import com.martin.kiperszmid.entregable.Controller.RecetaController;
 import com.martin.kiperszmid.entregable.Controller.RecyclerAdapter;
-import com.martin.kiperszmid.entregable.Controller.RecyclerItemTouchHelper;
+import com.martin.kiperszmid.entregable.Controller.RecyclerTouchCallback;
 import com.martin.kiperszmid.entregable.Model.POJO.Receta;
 import com.martin.kiperszmid.entregable.R;
 
@@ -27,13 +27,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentRecetas extends Fragment implements RecyclerAdapter.NotificadorRecetaCelda, RecyclerItemTouchHelper.NotificadorRITH {
+public class FragmentRecetas extends Fragment implements RecyclerAdapter.NotificadorRecetaCelda, RecyclerTouchCallback.OnStartDragListener {
 
     private NotificarResetaActivity notificarResetaActivity;
     private List<Receta> recetas;
     private List<Receta> filtrado;
     private CoordinatorLayout coordinatorLayout;
     RecyclerAdapter adapter;
+    private ItemTouchHelper helper;
     private boolean isFiltered = false;
     public FragmentRecetas() {
         // Required empty public constructor
@@ -55,15 +56,14 @@ public class FragmentRecetas extends Fragment implements RecyclerAdapter.Notific
 
         final RecyclerView recyclerView = view.findViewById(R.id.recetasRecycler);
 
-        adapter = new RecyclerAdapter(recetas, this);
+        adapter = new RecyclerAdapter(recetas, this, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        ItemTouchHelper.Callback callback = new RecyclerTouchCallback(adapter, this);
+        helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
+
         recyclerView.setAdapter(adapter);
-
-        ItemTouchHelper.SimpleCallback itemHelper = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(itemHelper).attachToRecyclerView(recyclerView);
-
-
-
 
         final EditText filtrar = view.findViewById(R.id.buscador);
 
@@ -104,9 +104,15 @@ public class FragmentRecetas extends Fragment implements RecyclerAdapter.Notific
         notificarResetaActivity.notificarReseta(receta);
     }
 
+
     // Opcion 3 del Destacado
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        helper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         if(viewHolder instanceof RecyclerAdapter.CeldaViewHolder){
             List<Receta> miRecetas;
             if(isFiltered)
