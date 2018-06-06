@@ -100,15 +100,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter implements RecyclerTou
         TextView titulo;
         TextView ingredientes;
         ImageView imagen;
-        RelativeLayout viewForeground, viewBackground;
 
         public CeldaViewHolder(View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.textviewCeldaTitulo);
             ingredientes = itemView.findViewById(R.id.textviewCeldaIngredientes);
             imagen = itemView.findViewById(R.id.imageviewCelda);
-            viewForeground = itemView.findViewById(R.id.viewForeground);
-            viewBackground = itemView.findViewById(R.id.viewBackground);
             itemView.setOnClickListener(this);
         }
 
